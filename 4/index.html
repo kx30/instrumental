@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+	<div id="app">
+		<input v-model="message" v-on:keyup.enter="onClick">
+			<div v-for="result in results">
+				<img v-bind:src="result.Poster" /> 
+			</div>
+    </div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.2.1/vue-resource.min.js"></script> 
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				results: [],
+				message: '',
+			},
+			methods: {
+				onClick: function() {
+					this.$http.get("https://www.omdbapi.com/?s=" + this.message + "&apikey=98e51151")
+					.then(function (response) {
+					  console.log(response)
+					  if(response.body.Response === "False"){
+					    console.log("Error")
+					  }
+					  this.results = response.data.Search;
+					}) 
+					.catch(function (e) {
+					  console.log("Something going wrong ", e);
+					})
+				}
+			}
+		})
+	</script>
+
+</body>
+</html>
