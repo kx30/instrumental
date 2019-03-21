@@ -29,6 +29,7 @@
 					  console.log(response)
 					  if(response.body.Response === "False"){
 					    console.log("Error")
+					    alert('Films not found')
 					  }
 					  this.results = response.data.Search;
 					}) 

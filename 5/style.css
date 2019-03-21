@@ -1,0 +1,55 @@
+input {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 50px;
+	width: 300px;
+	height: 20px;
+	font-size: 15px;
+	padding: 5px;
+	margin-bottom: 20px;
+}
+
+input:focus {
+	outline: none;
+}
+
+.content {
+	height: 500px;
+	width: 23%;
+	float: left;
+	padding-bottom: 50px;
+	margin: 2px; 
+	text-align: center;
+	vertical-align: middle;
+	font-size: 30px;
+}
+
+img {
+	height: 450px;
+	width: 100%;
+	float: left;
+	margin: 2px; 
+}
+
+button {
+	border-radius: 25px;
+	background: yellow;
+	font-size: 20px;
+}
+
+.favorite {
+	width: 50px;
+	height: 50px;
+	background-color: #000;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.star {
+	width: 50px;
+	height: 50px;
+	background-color: #000;
+	margin-left: auto;
+	margin-right: auto;
+}

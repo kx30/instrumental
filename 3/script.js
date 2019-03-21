@@ -135,16 +135,29 @@ function hide() {
   if (isHidden) {
     document.getElementById("images").style.display = "none";
     document.getElementById("toBackButton").style.display = "block";
+    showPopup();
     console.log(document.getElementById("toBackButton"));
     console.log(document.getElementById("images"));
   } else {
     document.getElementById("images").style.display = "block";
     document.getElementById("toBackButton").style.display = "none";
     popup.innerHTML = "";
+
+    for (let i = 0; i < titles.length; i++) {
+      let isFavorite = false;
+      for (let j = 0; j < localStorage.length; j++) { 
+        if (titles[i] == localStorage[titles[j]]) {
+          console.log(titles[i]);
+          document.getElementsByClassName("star")[i].style = "width: 50px; height: 50px; background-color: yellow";
+          break;
+        }
+        if (!isFavorite) {
+          document.getElementsByClassName("star")[i].style = "width: 50px; height: 50px; background-color: blue";
+        }
+      }
+    }
     console.log(document.getElementById("images"));
 
   }
-
-  showPopup();
 
 }

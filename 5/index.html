@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+	<div id="app">
+		<div v-show='!isHidden'>
+			<input v-model="message" v-on:keyup.enter="fetchFilm">
+			<div v-for="result in results">
+				<div class="content" v-on:click="onClick">
+					<p id="title">{{ result.Title }}</p>
+					<p hidden="true" id="type">{{ result.Type }}</p>
+					<p hidden="true" id="year">{{ result.Year }}</p>
+					<div class="favorite" style="margin-bottom: 50px;"></div>
+					<img v-bind:src="result.Poster" />
+				</div>
+			</div>
+		</div>
+
+		<div v-show='isHidden'>
+			<div class="content">
+				<button v-on:click="toBack">НАЗАД</button>
+				<p>{{ popup.Title }}</p>
+				<p>{{ popup.Type }}</p>
+				<p>{{ popup.Year }}</p>
+				<div class="star" v-on:click="checkIsFavorite"></div>
+				<img v-bind:src="popup.Poster" />
+			</div>
+		</div>
+
+    </div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.2.1/vue-resource.min.js"></script> 
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				results: [],
+				popup: [],
+				message: '',
+				isHidden: false,
+				title: ''
+			},
+			methods: {
+				fetchFilm: function() {
+					this.$http.get("https://www.omdbapi.com/?s=" + this.message + "&apikey=98e51151")
+					.then(function (response) {
+						console.log(response)
+						if (response.body.Response === "False"){
+							console.log("Error")
+							alert('Films not found')
+						}
+						this.results = response.data.Search;
+						console.log(this.results)
+
+						for (result in this.results) {
+							for (let item in localStorage) {
+								if (item == this.results[result].Title) {
+									let div = document.getElementsByClassName('favorite')[0]
+									console.log(div)
+								}
+							}
+						}
+
+					}) 
+					.catch(function (e) {
+					  console.log("Something going wrong ", e);
+					})
+
+				},
+
+				toBack: function() {
+					this.isHidden = !this.isHidden
+				},
+
+				onClick: function() {
+					this.isHidden = !this.isHidden
+					this.title = event.currentTarget.getElementsByTagName('p')[0].innerHTML	
+					var star = document.getElementsByClassName('star')[0]
+					console.log(this.title)
+					this.$http.get("https://www.omdbapi.com/?t=" + this.title + "&apikey=98e51151")
+					.then(function (response) {
+					  console.log(response)
+					  if(response.body.Response === "False"){
+					    console.log("Error")
+					    alert('Films not found')
+					  }
+					  this.popup = response.data;
+					  console.log(this.popup)
+					}) 
+					.catch(function (e) {
+					  console.log("Something going wrong ", e);
+					})
+
+					for (let item in localStorage) {
+						if (item == this.title) {
+							console.log(this.title)
+							console.log(item)
+							star.style.background = "yellow"
+							break;
+						} else {
+							star.style.background = "black"
+						}
+					}
+
+				},
+
+				checkIsFavorite: function() {
+					var star = event.currentTarget
+					for (let item in localStorage) {
+						if (item == this.title) {
+							console.log(this.title)
+							localStorage.removeItem(this.title)
+							star.style.background = "black"
+							break;
+						} else {
+							localStorage.setItem(this.title, this.title)	
+							star.style.background = "yellow"
+						}
+					}
+				}
+
+			}
+		})
+	</script>
+
+</body>
+</html>
